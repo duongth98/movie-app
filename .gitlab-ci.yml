@@ -3,12 +3,14 @@ services:
   - docker:dind
 
 stages:
-  - build-docker-image
+  - build-image
 
-build-docker-image:
-  stage: build-docker-image
+build:
+  stage: build-image
   before_script:
+    - docker info
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
   script:
-    - docker build --pull -t $CI_REGISTRY_IMAGE .
-    - docker push $CI_REGISTRY_IMAGE
+    - docker build --pull --rm -t "$CI_REGISTRY_IMAGE:latest" .
+    - docker tag "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
