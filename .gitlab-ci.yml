@@ -5,7 +5,7 @@ services:
 stages:
   - build-image
 
-build:
+build-image:
   stage: build-image
   before_script:
     - docker info
