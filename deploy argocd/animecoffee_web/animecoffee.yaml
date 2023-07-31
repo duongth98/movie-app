@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    test: animecoffee-web
+  name: animecoffee-web
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      test: animecoffee-web
+  template:
+    metadata:
+      labels:
+        test: animecoffee-web
+    spec:
+      containers:
+      - name: animecoffee-web
+        image: hub.docker.com/yang198/yang-movie-app:latest
+        ports:
+        - containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: animecoffee-web
+spec:
+  selector:
+    test: animecoffee-web
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 3000
+  type: ClusterIP
