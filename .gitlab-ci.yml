@@ -1,0 +1,16 @@
+image: docker:latest
+services:
+  - docker:dind
+
+stages:
+  - build-image
+
+build-image:
+  stage: build-image
+  before_script:
+    - docker info
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
+  script:
+    - docker build --pull --rm -t "$CI_REGISTRY_IMAGE:latest" .
+    - docker tag "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
