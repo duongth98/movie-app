@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: animecoffee-web
-        image: docker.io/yang198/yang-movie-app:latest
+        image: docker.io/yang198/yang-movie-app:develop
         ports:
         - containerPort: 3000
 
