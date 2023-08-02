@@ -4,5 +4,5 @@ resources:
 - animecoffee.yaml
 namespace: default
 images:
-- name: hub.docker.com/yang198/yang-movie-app
+- name: docker.io/yang198/yang-movie-app
   newTag: latest
