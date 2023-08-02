@@ -19,7 +19,13 @@ spec:
       - name: animecoffee-web
         env:
           - name: DATABASE_URL
-            value: "mongodb+srv://yang:7ujm,.lo9@clusteryang.ishmzy9.mongodb.net/movie-app"  
+            value: "mongodb+srv://yang:7ujm,.lo9@clusteryang.ishmzy9.mongodb.net/movie-app"
+          - name: NEXTAUTH_JWT_SECRET
+            value: "NEXTAUTH_JWT_SECRET"
+          - name: NEXTAUTH_SECRET
+            value: "NEXTAUTH_SECRET"
+          - name : NEXTAUTH_URL
+            value : http://127.0.0.1:3000  
         image: docker.io/yang198/yang-movie-app:develop
         ports:
         - containerPort: 3000
