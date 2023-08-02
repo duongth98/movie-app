@@ -4,6 +4,8 @@ metadata:
   labels:
     test: animecoffee-web
   name: animecoffee-web
+  annotations:
+    avp.kubernetes.io/path: "kv-v2/data/animecoffee"
   namespace: default
 spec:
   replicas: 1
@@ -19,13 +21,13 @@ spec:
       - name: animecoffee-web
         env:
           - name: DATABASE_URL
-            value: "mongodb+srv://yang:7ujm,.lo9@clusteryang.ishmzy9.mongodb.net/movie-app"
+            value: <db_url>
           - name: NEXTAUTH_JWT_SECRET
-            value: "NEXTAUTH_JWT_SECRET"
+            value: <next_jwt_secret>
           - name: NEXTAUTH_SECRET
-            value: "NEXTAUTH_SECRET"
+            value: <next_secret>
           - name : NEXTAUTH_URL
-            value : http://127.0.0.1:3000  
+            value : <next_url>
         image: docker.io/yang198/yang-movie-app:develop
         ports:
         - containerPort: 3000
