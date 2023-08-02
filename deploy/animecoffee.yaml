@@ -17,6 +17,9 @@ spec:
     spec:
       containers:
       - name: animecoffee-web
+        env:
+          - name: DATABASE_URL
+            value: "mongodb+srv://yang:7ujm,.lo9@clusteryang.ishmzy9.mongodb.net/movie-app"  
         image: docker.io/yang198/yang-movie-app:develop
         ports:
         - containerPort: 3000
@@ -33,4 +36,5 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 3000
-  type: ClusterIP
+    nodePort: 30098
+  type: NodePort
