@@ -1,11 +1,22 @@
+kind: Secret
+apiVersion: v1
+metadata:
+  name: animecoffee-secret
+  annotations:
+    avp.kubernetes.io/path: "kv-v2/data/animecoffe"
+type: Opaque
+data:
+  db_url: <db_url>
+  next_jwt_secret: <next_jwt_secret>
+  next_secret: <next_secret>
+  next_url: <next_url>
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     test: animecoffee-web
   name: animecoffee-web
-  annotations:
-    avp.kubernetes.io/path: "kv-v2/data/animecoffee"
   namespace: default
 spec:
   replicas: 1
@@ -21,13 +32,25 @@ spec:
       - name: animecoffee-web
         env:
           - name: DATABASE_URL
-            value: <db_url>
+            valueFrom:
+                secretKeyRef:
+                  name: animecoffee-secret  
+                  key: db_url
           - name: NEXTAUTH_JWT_SECRET
-            value: <next_jwt_secret>
+            valueFrom:
+                secretKeyRef:
+                  name: animecoffee-secret  
+                  key: next_jwt_secret
           - name: NEXTAUTH_SECRET
-            value: <next_secret>
+            valueFrom:
+                secretKeyRef:
+                  name: animecoffee-secret
+                  key: next_secret
           - name : NEXTAUTH_URL
-            value : <next_url>
+            valueFrom:
+                secretKeyRef:
+                  name: animecoffee-secret
+                  key: next_url
         image: docker.io/yang198/yang-movie-app:develop
         ports:
         - containerPort: 3000
