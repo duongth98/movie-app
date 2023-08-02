@@ -20,14 +20,6 @@ spec:
       containers:
       - name: animecoffee-web
         env:
-          - name: DATABASE_URL
-            value: <db_url>
-          - name: NEXTAUTH_JWT_SECRET
-            value: <next_jwt_secret>
-          - name: NEXTAUTH_SECRET
-            value: <next_secret>
-          - name : NEXTAUTH_URL
-            value : <next_url>
         image: docker.io/yang198/yang-movie-app:develop
         ports:
         - containerPort: 3000
