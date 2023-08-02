@@ -5,7 +5,7 @@ metadata:
   annotations:
     avp.kubernetes.io/path: "kv-v2/data/animecoffe"
 type: Opaque
-data:
+stringData:
   db_url: <db_url>
   next_jwt_secret: <next_jwt_secret>
   next_secret: <next_secret>
