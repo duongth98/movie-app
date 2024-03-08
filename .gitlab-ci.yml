@@ -33,6 +33,7 @@ deploy:
       - git clone https://${USER_DEPLOY}:${PASSWORD}@gitlab.com/devops5660826/argocd/helm-chart-app.git
       - git config --global user.email "phamduong812@gmail.com"
       - git config --global user.name "duongth"
+      - ls -la
       - git checkout -b dev
       - cd movie-app
       - echo $IMAGE
