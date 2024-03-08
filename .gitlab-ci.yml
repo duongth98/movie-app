@@ -13,7 +13,7 @@ forbuilddocker:
   tags: 
     - docker
   only:
-    - dev
+    - develop
   script:
     - docker build -t $IMAGE .
     - docker push $IMAGE
@@ -39,6 +39,6 @@ deploy:
       - git commit -am 'image update'
       - git push origin dev
     only:
-      - dev
+      - develop
     tags:
       - docker
