@@ -28,7 +28,7 @@ deploy:
       - apk add --no-cache git curl bash coreutils
       - mkdir /data/
       - cd /data
-      - git clone https://${USER_DEPLOY}:${PASSWORD}@https://gitlab.com/devops5660826/argocd/helm-chart-app.git
+      - git clone https://${USER_DEPLOY}:${PASSWORD}@gitlab.com/devops5660826/argocd/helm-chart-app.git
       - git config --global user.email "phamduong812@gmail.com"
       - git config --global user.name "duongth"
     script:
