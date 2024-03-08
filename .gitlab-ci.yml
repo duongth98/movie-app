@@ -32,7 +32,7 @@ deploy:
       - git config --global user.email "phamduong812@gmail.com"
       - git config --global user.name "duongth"
     script:
-      - git checkout -b dev origin/dev
+      - git checkout -b dev
       - cd movie-app
       - echo $IMAGE
       - eval ''.image.tag' = "'master-$CI_COMMIT_SHA'"' -i values.yaml
