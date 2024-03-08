@@ -3,16 +3,42 @@ services:
   - docker:dind
 
 stages:
-  - build-image
-
-build-image:
-  stage: build-image
+  - builddocker
+  - deploy
+before_script:
+  - export IMAGE="$CI_REGISTRY_IMAGE:master-$CI_COMMIT_SHA"
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
+forbuilddocker:
+  stage: builddocker
+  tags: 
+    - docker
   only:
-    - master
-  before_script:
-    - docker info
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD"
+    - dev
   script:
-    - docker build --pull --rm -t "$CI_REGISTRY_IMAGE:latest" .
-    - docker tag "$CI_REGISTRY_IMAGE:latest" "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
-    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+    - docker build -t $IMAGE .
+    - docker push $IMAGE
+    - docker rmi $IMAGE
+
+deploy:
+    stage: deploy
+    image: alpine:3.16
+    before_script:
+      - export IMAGE="CI_REGISTRY_IMAGE:master-$CI_COMMIT_SHA"
+      - apk update
+      - apk add --no-cache git curl bash coreutils
+      - mkdir /data/
+      - cd /data
+      - git clone https://${USER_DEPLOY}:${PASSWORD}@https://gitlab.com/devops5660826/argocd/helm-chart-app.git
+      - git config --global user.email "phamduong812@gmail.com"
+      - git config --global user.name "duongth"
+    script:
+      - git checkout -b dev origin/dev
+      - cd movie-app
+      - echo $IMAGE
+      - eval ''image.tag' = "'master-$CI_COMMIT_SHA'"' -i values.yaml
+      - git commit -am 'image update'
+      - git push origin dev
+    only:
+      - dev
+    tags:
+      - docker
