@@ -21,18 +21,21 @@ forbuilddocker:
 
 deploy:
     stage: deploy
-    image: mikefarah/yq:4
     before_script:
-      # Define remote origin
-      - git remote set-url origin "https://${USER_DEPLOY}:${PASSWORD}@gitlab.com/devops5660826/argocd/helm-chart-app.git"
-      # Configure git user
+      - mkdir /data/
+      - cd /data
+      - git clone https://${USER_DEPLOY}:${PASSWORD}@gitlab.com/devops5660826/argocd/helm-chart-app.git
       - git config --global user.email "phamduong812@gmail.com"
       - git config --global user.name "duongth"
-      # Reset to remote main branch
-      - git fetch
 
     script:
-      - ls -la
+      - cd helm-chart-app
+      - git checkout -b dev
+      - cd movie-app
+      - docker run --rm -v "$(pwd):/workspace" -w /workspace mikefarah/yq:4 yq eval '.image.tag = "'master-$CI_COMMIT_SHA'"' values.yaml
+      - git commit -am 'image update'
+      - git push origin release
+
     only:
       - develop
     tags:
