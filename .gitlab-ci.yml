@@ -39,8 +39,8 @@ deploy:
       - ls -la
       - cd movie-app
       - echo $IMAGE
-      - eval ''image.tag' = "'master-$CI_COMMIT_SHA'"' -i values.yaml
-      # - yq -i '.image.tag = "'master-$CI_COMMIT_SHA'"' values.yaml
+      # - eval ''image.tag' = "'master-$CI_COMMIT_SHA'"' -i values.yaml
+      - yq -i '.image.tag = "'master-$CI_COMMIT_SHA'"' values.yaml
       - git commit -am 'image update'
       - git push origin dev
     only:
