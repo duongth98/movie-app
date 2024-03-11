@@ -34,7 +34,7 @@ deploy:
       - cd movie-app
       - docker run --rm -v "$(pwd):/workspace" -w /workspace mikefarah/yq:4 yq eval '.image.tag = "'master-$CI_COMMIT_SHA'"' values.yaml
       - git commit -am 'image update'
-      - git push origin release
+      - git push origin dev
 
     only:
       - develop
