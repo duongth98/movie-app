@@ -21,11 +21,9 @@ forbuilddocker:
 
 deploy:
     stage: deploy
-    image: alpine:3.16
+    image: mikefarah/yq:4
     before_script:
       - export IMAGE="CI_REGISTRY_IMAGE:master-$CI_COMMIT_SHA"
-      - apk update
-      - apk add --no-cache git curl bash coreutils
       - mkdir /data/
       - cd /data
 
