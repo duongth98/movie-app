@@ -55,19 +55,19 @@ deploy:
     - cd helm-chart-app
     - git checkout dev
     - cd movie-app
-    - >
-      docker run --rm
-      --user="root"
-      -v "${PWD}":/workspace
-      -w /workspace
-      mikefarah/yq:4
-      eval ''.image.tag' = "master-456"' -i values.yaml
-    - git config --global user.email "np-devops@mpos.vn"
-    - git config --global user.name "DevOps Team"
+    # - >
+    #   docker run --rm
+    #   --user="root"
+    #   -v "${PWD}":/workspace
+    #   -w /workspace
+    #   mikefarah/yq:4
+    #   eval ''.image.tag' = "master-456"' -i values.yaml
+    - docker run --rm --user="root" -v "${PWD}":/workspace -w /workspace mikefarah/yq:4 eval ''.image.tag' = "master-456"' -i values.yaml
+    - git config --global user.email "phamduong812@gmail.com"
+    - git config --global user.name "DuongTH"
     - git add .
-    - git commit -m "[BOT] Update $CI_PROJECT_NAME image tag"
+    - git commit -m " Update $CI_PROJECT_NAME image tag"
     - git push origin dev
   only:
     - develop
-  tags:
-    - docker
+
