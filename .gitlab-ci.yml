@@ -33,7 +33,7 @@ deploy:
       - git checkout dev
       - cd movie-app
       - ls -la
-      - docker run --rm -v "$(pwd):/workdir" mikefarah/yq:4 eval '.image.tag = "'master-$CI_COMMIT_SHA'"' /workdir/values.yaml
+      - docker run --user=root --rm -v "$(pwd):/workdir" mikefarah/yq:4 eval '.image.tag = "'master-456'"' values.yaml
       - git commit -am 'image update'
       - git push origin dev
 
