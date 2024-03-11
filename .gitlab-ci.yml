@@ -19,26 +19,55 @@ before_script:
 #     - docker push $IMAGE
 #     - docker rmi $IMAGE
 
+# deploy:
+#     stage: deploy
+#     before_script:
+#       - mkdir /data/
+#       - cd /data
+#       - git clone https://${USER_DEPLOY}:${PASSWORD}@gitlab.com/devops5660826/argocd/helm-chart-app.git
+#       - git config --global user.email "phamduong812@gmail.com"
+#       - git config --global user.name "duongth"
+
+#     script:
+#       - cd helm-chart-app
+#       - git checkout dev
+#       - cd movie-app
+#       - ls -la
+#       - pwd
+#       - docker run --rm --user="root" -v "${PWD}":/workspace -w /workspace mikefarah/yq:4 eval ''.image.tag' = "master-456"' /data/helm-chart-app/movie-app/values.yaml
+#       - git commit -am 'image update'
+#       - git push origin dev
+
+    # only:
+    #   - develop
+    # tags:
+    #   - docker
+
+
 deploy:
-    stage: deploy
-    before_script:
-      - mkdir /data/
-      - cd /data
-      - git clone https://${USER_DEPLOY}:${PASSWORD}@gitlab.com/devops5660826/argocd/helm-chart-app.git
-      - git config --global user.email "phamduong812@gmail.com"
-      - git config --global user.name "duongth"
-
-    script:
-      - cd helm-chart-app
-      - git checkout dev
-      - cd movie-app
-      - ls -la
-      - pwd
-      - docker run --rm --user="root" -v "${PWD}":/workspace -w /workspace mikefarah/yq:4 eval ''.image.tag' = "master-456"' /data/helm-chart-app/movie-app/values.yaml
-      - git commit -am 'image update'
-      - git push origin dev
-
-    only:
-      - develop
-    tags:
-      - docker
+  stage: deploy
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - rm -rf chart
+  script:
+    - git clone https://${USER_DEPLOY}:${PASSWORD}@gitlab.com/devops5660826/argocd/helm-chart-app.git
+    - cd helm-chart-app
+    - git checkout dev
+    - cd movie-app
+    - >
+      docker run --rm
+      --user="root"
+      -v "${PWD}":/workspace
+      -w /workspace
+      mikefarah/yq:4
+      eval ''.image.tag' = "master-456"' -i values.yaml
+    - git config --global user.email "np-devops@mpos.vn"
+    - git config --global user.name "DevOps Team"
+    - git add .
+    - git commit -m "[BOT] Update $CI_PROJECT_NAME image tag"
+    - git push origin dev
+  only:
+    - develop
+  tags:
+    - docker
