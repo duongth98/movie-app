@@ -32,14 +32,7 @@ deploy:
       - git fetch
 
     script:
-      # Update YAML file
-      - cd helm-chart-app
-      - git checkout dev
       - ls -la
-      - cd movie-app
-      - yq -i ''.image.tag' = "'master-$CI_COMMIT_SHA'"' values.yaml
-      - git commit -am 'image update'
-      - git push origin dev
     only:
       - develop
     tags:
