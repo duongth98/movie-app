@@ -3,21 +3,21 @@ services:
   - docker:dind
 
 stages:
-  - builddocker
+  # - builddocker
   - deploy
 before_script:
   - export IMAGE="$CI_REGISTRY_IMAGE:master-$CI_COMMIT_SHA"
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD
-forbuilddocker:
-  stage: builddocker
-  tags: 
-    - docker
-  only:
-    - develop
-  script:
-    - docker build -t $IMAGE .
-    - docker push $IMAGE
-    - docker rmi $IMAGE
+# forbuilddocker:
+#   stage: builddocker
+#   tags: 
+#     - docker
+#   only:
+#     - develop
+#   script:
+#     - docker build -t $IMAGE .
+#     - docker push $IMAGE
+#     - docker rmi $IMAGE
 
 deploy:
     stage: deploy
@@ -32,7 +32,7 @@ deploy:
       - cd helm-chart-app
       - git checkout dev
       - cd movie-app
-      - docker run --rm -v "$(pwd):/workspace" -w /workspace mikefarah/yq:4 yq eval '.image.tag = "'master-$CI_COMMIT_SHA'"' values.yaml
+      - docker run --rm -v "$(pwd):/workspace" -w /workspace mikefarah/yq:4 eval '.image.tag = "'master-$CI_COMMIT_SHA'"' values.yaml
       - git commit -am 'image update'
       - git push origin dev
 
