@@ -35,7 +35,7 @@ deploy:
       - git config --global user.name "duongth"
       - ls -la
       - cd helm-chart-app
-      - git checkout -b dev
+      - git checkout dev
       - ls -la
       - cd movie-app
       - echo $IMAGE
