@@ -36,6 +36,7 @@ deploy:
       - ls -la
       - cd helm-chart-app
       - git checkout -b dev
+      - ls -la
       - cd movie-app
       - echo $IMAGE
       - eval ''.image.tag' = "'master-$CI_COMMIT_SHA'"' -i values.yaml
