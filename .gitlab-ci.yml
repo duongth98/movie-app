@@ -23,22 +23,21 @@ deploy:
     stage: deploy
     image: mikefarah/yq:4
     before_script:
-      - export IMAGE="CI_REGISTRY_IMAGE:master-$CI_COMMIT_SHA"
-      - mkdir /data/
-      - cd /data
-
-    script:
-      - git clone https://${USER_DEPLOY}:${PASSWORD}@gitlab.com/devops5660826/argocd/helm-chart-app.git
+      # Define remote origin
+      - git remote set-url origin "https://${USER_DEPLOY}:${PASSWORD}@gitlab.com/devops5660826/argocd/helm-chart-app.git"
+      # Configure git user
       - git config --global user.email "phamduong812@gmail.com"
       - git config --global user.name "duongth"
-      - ls -la
+      # Reset to remote main branch
+      - git fetch
+
+    script:
+      # Update YAML file
       - cd helm-chart-app
       - git checkout dev
       - ls -la
       - cd movie-app
-      - echo $IMAGE
-      # - eval ''image.tag' = "'master-$CI_COMMIT_SHA'"' -i values.yaml
-      - yq -i '.image.tag = "'master-$CI_COMMIT_SHA'"' values.yaml
+      - yq -i ''.image.tag' = "'master-$CI_COMMIT_SHA'"' values.yaml
       - git commit -am 'image update'
       - git push origin dev
     only:
