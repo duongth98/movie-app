@@ -30,7 +30,7 @@ deploy:
 
     script:
       - cd helm-chart-app
-      - git checkout -b dev
+      - git checkout dev
       - cd movie-app
       - docker run --rm -v "$(pwd):/workspace" -w /workspace mikefarah/yq:4 yq eval '.image.tag = "'master-$CI_COMMIT_SHA'"' values.yaml
       - git commit -am 'image update'
