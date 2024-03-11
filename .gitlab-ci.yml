@@ -34,7 +34,7 @@ deploy:
       - cd movie-app
       - ls -la
       - pwd
-      - docker run --rm --user="root" -v "${PWD}":/workspace -w /workspace mikefarah/yq:4 eval ''.image.tag' = "'master-456'"' /workspace/values.yaml
+      - docker run --rm --user="root" -v "${PWD}":/workspace -w /workspace mikefarah/yq:4 eval ''.image.tag' = "master-456"' /data/helm-chart-app/movie-app/values.yaml
       - git commit -am 'image update'
       - git push origin dev
 
